@@ -1,0 +1,26 @@
+version: '3.9'
+services:
+    rabbitmq:
+        container_name: rabbitmq
+        image: rabbitmq:3.9.7-management
+        environment:
+            - RABBITMQ_DEFAULT_USER=${USERNAME}
+            - RABBITMQ_DEFAULT_PASS=${PASSWORD}
+        volumes:
+            - ./data:/var/lib/rabbitmq
+        ports:
+            - 5672:5672
+            - ${RABBITMQ_MANAGEMENT_PORT}:15672
+        networks:
+            - webnet
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '8m'
+                max-file: '10'
+        restart: always
+
+networks:
+    webnet:
+        name: webnet
+        driver: bridge
